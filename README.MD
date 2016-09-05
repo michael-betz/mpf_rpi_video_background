@@ -69,8 +69,10 @@ Also make sure that your slide has a transparent background:
 
   * With the kivy based slide player I get 100% CPU load on one core. Video stutters a lot.
     MPF becomes unresponsive.
-  * With hello_video alone I get 4 % CPU load, together with MPF it's ~ 25 %. Video plays
+  * With hello_video alone I get < 1 % CPU load, together with MPF it's ~ 25 %. Video plays
     perfectly smooth.
+
+[Demo video](https://youtu.be/0eL0hHpMdWM)
  
 ## TODO
    * Support the MPF asset manger to get the .h264 file names.
