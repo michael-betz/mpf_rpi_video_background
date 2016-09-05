@@ -7,9 +7,15 @@ in Mission Pinball on the Raspberry Pi 2 and 3. A dirty but effective hack.
 
 ## Installation
 
-  1. Add `KivyWindow.clearcolor = (0, 0, 0, 0)` to `mpfmc/uix/window.py`
-     This will make your MPF slide window have a transparent background,
-     so videos can be played below it.
+  1. Make the Mission Pinball Framework (MPF) window background transparent,
+     so videos can be played below it. To do that, modify `mpfmc/uix/window.py` and add the line:
+    
+    ```python
+    KivyWindow.clearcolor = (0, 0, 0, 0)
+    
+    class Window(object):
+      ...
+    ```
 
   2. Copy the `scriptlets` folder to your mpf machine folder.
 
@@ -24,39 +30,38 @@ in Mission Pinball on the Raspberry Pi 2 and 3. A dirty but effective hack.
 The player listens to the MPF event `video_background_change`.
 To play a video you can do this for example:
      
-    ```yaml
-    event_player:
-      mode_attract_started:
-        video_background_change:
-          fName: "<path+filename>.h264"
-          z: -1             # sets z index to -1 (below MPF slides)
-          #stop: True       # stops playing
-    ```
+```yaml
+event_player:
+  mode_attract_started:
+    video_background_change:
+      fName: "<path+filename>.h264"
+      z: -1             # sets z index to -1 (below MPF slides)
+      #stop: True       # stops playing
+```
     
 Also make sure that your slide has a transparent background:
 
-    ```yaml
-        slides:
-          intro_slide:
-            background_color: 00000000
-    ```
+```yaml
+    slides:
+      intro_slide:
+        background_color: 00000000
+```
     
 ## How it works    
     
   1. `./scriptlets/video_background.py` and `hello_video.py` are 
      imported during init of mpf.
   2. When the user wants to play a video, `hello_video.py` calls 
-     the `hello_video.bin` application. It can __seamlesslys__
+     the `hello_video.bin` application. It can __seamlessly__
      loop .h264 video files on the Raspi grapical background layer
-  3. We have to configure MPF-MC to have a transparent background window.
-     So add `KivyWindow.clearcolor = (0, 0, 0, 0)` to mpfmc/uix/window.py
-     Also use `background_color: 00000000` in the slide config (last 00 is alpha)
+  3. As the MPF window is transparent now, the video will shine through. The alpha blending
+     works very neatly and there are no problems i.e., with transparent .png files.
   4. The python library `hello_video` communicates with the player `hello_video.bin`
      via stdout. So it's possible to change the playing video seamlessly and without
-     blackouts or glitches. This is the advantage over omxplayer.
-  5. We listen to the MPF event `video_background_change`. See below for examples.
-  6. .h264 files can be easily created with ffmpeg. See attached `convert_h264.sh`
-     file for details
+     blackouts or glitches. This is an advantage over omxplayer.
+  5. We listen to the MPF event `video_background_change`. See above for `.yaml` example.
+  6. hello_video only plays raw .h264 files. They can be easily created with ffmpeg. 
+     See the `convert_h264.sh` file for details
      
 ## Results
 
